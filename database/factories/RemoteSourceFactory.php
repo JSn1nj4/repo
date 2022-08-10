@@ -5,19 +5,28 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RemoteSource>
+ * @extends Factory
  */
 class RemoteSourceFactory extends Factory
 {
+    private static array $prefixes = ['git@', 'https://'];
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
+        $prefix = $this->faker->randomElement(self::$prefixes);
+
         return [
-            //
+            'name' => $this->faker->unique()->name,
+            'url_base' => "{$prefix}{$this->faker->unique()->domainName}",
+            'separator' => match($prefix) {
+                "git@" => ":",
+                default => "/",
+            }
         ];
     }
 }
