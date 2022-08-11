@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Models\RemoteSource;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class ListRemoteSources extends Command
@@ -39,16 +38,5 @@ class ListRemoteSources extends Command
         );
 
         return self::SUCCESS;
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 }
