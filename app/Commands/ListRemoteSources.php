@@ -12,7 +12,7 @@ class ListRemoteSources extends Command
      *
      * @var string
      */
-    protected $signature = 'list:remote_sources';
+    protected $signature = 'list:remote_source';
 
     /**
      * The description of the command.
