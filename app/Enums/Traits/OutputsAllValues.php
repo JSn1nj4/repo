@@ -2,15 +2,15 @@
 
 namespace App\Enums\Traits;
 
-trait CanGetValueArray
+trait OutputsAllValues
 {
-    public static function toArray(): array
+    public static function caseValues(): array
     {
         return array_map(fn($case) => $case->value, static::cases());
     }
 
     public static function implode(string $separator): string
     {
-        return implode($separator, static::toArray());
+        return implode($separator, static::caseValues());
     }
 }
