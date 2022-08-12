@@ -32,7 +32,7 @@ class AddRemoteSource extends Command
      */
     public function handle(CheckRemoteSourceExists $remoteSourceExists): int
     {
-        if($remoteSourceExists($this->argument('name'))) {
+        if($remoteSourceExists(name: $this->argument('name'))) {
             $this->error("A remote source named '{$this->argument('name')}' already exists.");
             return self::FAILURE;
         }
