@@ -4,10 +4,10 @@ namespace App\Enums;
 
 use App\Enums\Traits\OutputsValueLists;
 
-enum RemoteSourceEditableField: string {
+enum RemoteSourceUniqueField: string {
     use OutputsValueLists;
 
+    case ID = 'id';
     case NAME = 'name';
     case URL_BASE = 'url_base';
-    case SEPARATOR = 'separator';
 }

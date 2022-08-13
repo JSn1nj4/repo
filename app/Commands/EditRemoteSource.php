@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use App\Actions\CheckRemoteSourceExists;
 use App\Enums\RemoteSourceEditableField;
+use App\Enums\RemoteSourceUniqueField;
 use App\Models\RemoteSource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LaravelZero\Framework\Commands\Command;
@@ -102,8 +103,11 @@ class EditRemoteSource extends Command
      */
     protected function searchFieldIsAllowed(): bool
     {
-        if(!in_array($this->option('search-by'), ['id', 'name', 'url_base'])) {
-            $this->error("'--search-by' must be one of: 'id', 'name', 'url_base'");
+        if(!RemoteSourceUniqueField::tryFrom($this->option('search-by'))) {
+            $this->error(sprintf(
+                "'--search-by' must be one of: '%s'",
+                RemoteSourceUniqueField::implode('\', \'')
+            ));
             return false;
         }
 
