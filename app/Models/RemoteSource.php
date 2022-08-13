@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\RemoteSource
@@ -42,13 +43,13 @@ class RemoteSource extends Model
         'separator',
     ];
 
-    public function owners(): BelongsToMany
+    public function owners(): HasMany
     {
-        return $this->belongsToMany(Owner::class);
+        return $this->hasMany(Owner::class);
     }
 
-    public function repos(): HasMany
+    public function repos(): HasManyThrough
     {
-        return $this->hasMany(Repo::class);
+        return $this->hasManyThrough(Repo::class, Owner::class);
     }
 }
