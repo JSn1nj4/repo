@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Actions\CheckRemoteSourceExists;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,9 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            CheckRemoteSourceExists::class,
-            fn() => new CheckRemoteSourceExists()
-        );
+        //
     }
 }

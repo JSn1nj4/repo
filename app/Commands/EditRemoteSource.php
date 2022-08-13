@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use App\Actions\CheckRemoteSourceExists;
 use App\Enums\RemoteSourceEditableField;
 use App\Enums\RemoteSourceUniqueField;
 use App\Models\RemoteSource;
@@ -30,7 +29,7 @@ class EditRemoteSource extends Command
     protected $description = 'Edit an existing remote source.';
 
     /**
-     * The RemoteSource model to udpate
+     * The RemoteSource model to update
      *
      * @var RemoteSource
      */
@@ -39,9 +38,9 @@ class EditRemoteSource extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
-    public function handle(CheckRemoteSourceExists $remoteSourceExists)
+    public function handle(): int
     {
         if(!$this->searchFieldIsAllowed()) return self::FAILURE;
 

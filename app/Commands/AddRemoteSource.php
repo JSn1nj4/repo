@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Actions\CheckRemoteSourceExists;
 use App\Models\RemoteSource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LaravelZero\Framework\Commands\Command;
 
 class AddRemoteSource extends Command
@@ -30,17 +30,11 @@ class AddRemoteSource extends Command
      *
      * @return mixed
      */
-    public function handle(CheckRemoteSourceExists $remoteSourceExists): int
+    public function handle(): int
     {
-        if($remoteSourceExists(name: $this->argument('name'))) {
-            $this->error("A remote source named '{$this->argument('name')}' already exists.");
-            return self::FAILURE;
-        }
+        if($this->remoteSourceIsFound(by: 'name')) return self::FAILURE;
 
-        if($remoteSourceExists(url_base: $this->argument('url_base'))) {
-            $this->error("A remote source exists with url_base '{$this->argument('url_base')}'.");
-            return self::FAILURE;
-        }
+        if($this->remoteSourceIsFound(by: 'url_base')) return self::FAILURE;
 
         RemoteSource::create([
             'name' => $this->argument('name'),
@@ -51,5 +45,34 @@ class AddRemoteSource extends Command
         $this->info('Remote source added successfully.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Try to find a matching RemoteSource
+     *
+     * @param string $by
+     * @throws \InvalidArgumentException
+     * @return bool
+     */
+    protected function remoteSourceIsFound(string $by): bool
+    {
+        if(!in_array($by, ['name', 'url_base'])) {
+            throw new \InvalidArgumentException("Argument for '\$by' must be one of 'name' or 'url_base'.");
+        }
+
+        try {
+            RemoteSource::where($by, $this->argument($by))
+                ->firstOrFail();
+        } catch (ModelNotFoundException) {
+            return false;
+        }
+
+        $this->error(sprintf(
+            "A remote source was found by '%s' with value '%s'.",
+            $by,
+            $this->argument($by)
+        ));
+
+        return true;
     }
 }
