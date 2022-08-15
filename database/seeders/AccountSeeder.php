@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Account;
 use App\Models\RemoteSource;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RemoteSourceSeeder extends Seeder
+class AccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +16,14 @@ class RemoteSourceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table(RemoteSource::make()->getTable())
+        if(RemoteSource::count() === 0) {
+            $this->call(RemoteSourceSeeder::class);
+        }
+
+        DB::table(Account::make()->getTable())
             ->truncate();
 
-        RemoteSource::factory(3)
+        Account::factory(10)
             ->create();
     }
 }

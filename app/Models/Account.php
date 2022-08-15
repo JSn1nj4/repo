@@ -6,13 +6,14 @@ use App\Enums\AccountSearchableField;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InvalidArgumentException;
 
 /**
  * An "owner" is a repository owner - either a user or an org
- * 
+ *
  * This is why it's called "Owner", because this tool doesn't know
  * what type of account owns a repository.
  *
@@ -51,9 +52,9 @@ class Account extends Model
         'shorthand',
     ];
 
-    public function remoteSources(): BelongsToMany
+    public function remoteSource(): BelongsTo
     {
-        return $this->belongsToMany(RemoteSource::class);
+        return $this->belongsTo(RemoteSource::class);
     }
 
     public function repos(): HasMany
