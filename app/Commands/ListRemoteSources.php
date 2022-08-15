@@ -30,9 +30,9 @@ class ListRemoteSources extends Command
     {
         $this->info("Remote sources currently saved");
         $this->table(
-            ['id', 'name', 'url_base', 'separator', 'owners_count', 'repos_count'],
+            ['id', 'name', 'url_base', 'separator', 'accounts_count', 'repos_count'],
             RemoteSource::select(['id', 'name', 'url_base', 'separator'])
-                ->withCount(['owners', 'repos'])
+                ->withCount(['accounts', 'repos'])
                 ->get()
                 ->toArray()
         );

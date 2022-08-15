@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Actions\Console\CheckAccountExists;
-use App\Actions\Console\CheckRemoteSourceExists;
 use App\Actions\Console\CheckRemoteSourceMissing;
 use App\Models\Account;
 use App\Models\RemoteSource;
@@ -34,7 +33,7 @@ class AddAccount extends Command
      * Execute the console command.
      *
      * @param CheckAccountExists $ownerExists
-     * @param CheckRemoteSourceExists $remoteSourceExists
+     * @param CheckRemoteSourceMissing $remoteSourceMissing
      * @return int
      */
     public function handle(CheckAccountExists $ownerExists, CheckRemoteSourceMissing $remoteSourceMissing): int
@@ -67,7 +66,7 @@ class AddAccount extends Command
             'shorthand' => $this->argument('shorthand')
         ]);
 
-        $this->info('Owner added successfully.');
+        $this->info('Account added successfully.');
 
         return self::SUCCESS;
     }
