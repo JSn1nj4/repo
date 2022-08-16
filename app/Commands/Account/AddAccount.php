@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Account;
 
-use App\Actions\Console\CheckAccountExists;
-use App\Actions\Console\CheckRemoteSourceMissing;
 use App\Models\Account;
 use App\Models\RemoteSource;
+use App\Traits\CommandFindsAccount;
+use App\Traits\CommandFindsRemote;
 use LaravelZero\Framework\Commands\Command;
 
 class AddAccount extends Command
 {
+    use CommandFindsAccount,
+        CommandFindsRemote;
+
     /**
      * The signature of the command.
      *
@@ -32,28 +35,23 @@ class AddAccount extends Command
     /**
      * Execute the console command.
      *
-     * @param CheckAccountExists $ownerExists
-     * @param CheckRemoteSourceMissing $remoteSourceMissing
      * @return int
      */
-    public function handle(CheckAccountExists $ownerExists, CheckRemoteSourceMissing $remoteSourceMissing): int
+    public function handle(): int
     {
-        if($ownerExists(
+        if(!$this->accountMissing(
             by: 'name',
-            with: $this->argument('name'),
-            command: $this
+            with: $this->argument('name')
         )) return self::FAILURE;
 
-        if($ownerExists(
+        if(!$this->accountMissing(
             by: 'slug',
-            with: $this->argument('slug'),
-            command: $this
+            with: $this->argument('slug')
         )) return self::FAILURE;
 
-        if($remoteSourceMissing(
+        if(!$this->remoteExists(
             by: $this->option('associate-by'),
             with: $this->argument('remote'),
-            command: $this
         )) return self::FAILURE;
 
         Account::create([

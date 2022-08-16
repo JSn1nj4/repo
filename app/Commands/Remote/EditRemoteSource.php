@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Remote;
 
 use App\Enums\RemoteSourceEditableField;
 use App\Enums\RemoteSourceUniqueField;
-use App\Models\RemoteSource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Traits\CommandFindsRemote;
 use LaravelZero\Framework\Commands\Command;
 
 class EditRemoteSource extends Command
 {
+    use CommandFindsRemote;
+
     /**
      * The signature of the command.
      *
@@ -18,8 +19,8 @@ class EditRemoteSource extends Command
     protected $signature = 'edit:remote_source
         {--search-by=name : The field to find a remote by - one of "id", "name", or "url_base".}
         {--edit-field=name : The field to update - one of "name", "url_base", or "separator".}
-        {searchValue : The value to search by.}
-        {newValue : The field\'s new value.}';
+        {search-value : The value to search by.}
+        {new : The field\'s new value.}';
 
     /**
      * The description of the command.
@@ -27,13 +28,6 @@ class EditRemoteSource extends Command
      * @var string
      */
     protected $description = 'Edit an existing remote source.';
-
-    /**
-     * The RemoteSource model to update
-     *
-     * @var RemoteSource
-     */
-    protected RemoteSource $remoteSource;
 
     /**
      * Execute the console command.
@@ -46,7 +40,7 @@ class EditRemoteSource extends Command
 
         if(!$this->fieldIsEditable()) return self::FAILURE;
 
-        if(!$this->remoteSourceIsFound()) return self::FAILURE;
+        if(!$this->findRemote()) return self::FAILURE;
 
         $this->updateRemoteSource();
 
@@ -64,28 +58,6 @@ class EditRemoteSource extends Command
             $this->error(sprintf(
                 "'--edit-field' must be one of: '%s'",
                 RemoteSourceEditableField::implode('\', \'')
-            ));
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Try to find a matching RemoteSource
-     *
-     * @return bool
-     */
-    protected function remoteSourceIsFound(): bool
-    {
-        try {
-            $this->remoteSource = RemoteSource::where($this->option('search-by'), $this->argument('searchValue'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException) {
-            $this->error(sprintf(
-                "A remote source was not found by '%s' with value '%s'.",
-                $this->option('search-by'),
-                $this->argument('searchValue')
             ));
             return false;
         }
@@ -120,17 +92,17 @@ class EditRemoteSource extends Command
      */
     protected function updateRemoteSource(): void
     {
-        $this->remoteSource->{$this->option('edit-field')} = $this->argument('newValue');
-        $this->remoteSource->save();
+        $this->remote->{$this->option('edit-field')} = $this->argument('new');
+        $this->remote->save();
 
         $this->info('Remote source updated');
         $this->table(
             ['id', 'name', 'url_base', 'separator'],
             [[
-                'id' => $this->remoteSource->id,
-                'name' => $this->remoteSource->name,
-                'url_base' => $this->remoteSource->url_base,
-                'separator' => $this->remoteSource->separator,
+                'id' => $this->remote->id,
+                'name' => $this->remote->name,
+                'url_base' => $this->remote->url_base,
+                'separator' => $this->remote->separator,
             ]]
         );
     }

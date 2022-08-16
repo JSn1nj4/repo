@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Remote;
 
 use App\Enums\RemoteSourceUniqueField;
-use App\Models\RemoteSource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Traits\CommandFindsRemote;
 use LaravelZero\Framework\Commands\Command;
 
 class DeleteRemoteSource extends Command
 {
+    use CommandFindsRemote;
+
     /**
      * The signature of the command.
      *
@@ -16,7 +17,7 @@ class DeleteRemoteSource extends Command
      */
     protected $signature = 'delete:remote_source
         {--search-by=name : The field to find a remote source by - one of "id", "name", or "url_base".}
-        {searchValue : The value to search by.}';
+        {search-value : The value to search by.}';
 
     /**
      * The description of the command.
@@ -24,13 +25,6 @@ class DeleteRemoteSource extends Command
      * @var string
      */
     protected $description = 'Remove a remote source from the database.';
-
-    /**
-     * The RemoteSource model to delete
-     *
-     * @var RemoteSource
-     */
-    protected RemoteSource $remoteSource;
 
     /**
      * Delete the remote source
@@ -42,12 +36,12 @@ class DeleteRemoteSource extends Command
     protected function deleteRemoteSource(): bool
     {
         try {
-            $this->remoteSource->deleteOrFail();
+            $this->remote->deleteOrFail();
         } catch (\Throwable) {
             $this->error(sprintf(
                 "Failed to delete remote source by '%s' with value '%s'.",
                 $this->option('search-by'),
-                $this->argument('searchValue')
+                $this->argument('search-value')
             ));
 
             return false;
@@ -65,15 +59,15 @@ class DeleteRemoteSource extends Command
     {
         if(!$this->searchFieldIsAllowed()) return self::FAILURE;
 
-        if(!$this->remoteSourceIsFound()) return self::FAILURE;
+        if(!$this->findRemote()) return self::FAILURE;
 
         if($this->remoteSourceHasDependencies()) return self::FAILURE;
 
         if(!$this->deleteRemoteSource()) return self::FAILURE;
 
         $this->info(sprintf(
-            "Remote source '%s' deleted.",
-            $this->argument('searchValue')
+            "Remote '%s' deleted.",
+            $this->argument('search-value')
         ));
 
         return self::SUCCESS;
@@ -86,8 +80,8 @@ class DeleteRemoteSource extends Command
      */
     protected function remoteSourceHasDependencies(): bool
     {
-        $accounts_count = $this->remoteSource->accounts->count();
-        $repos_count = $this->remoteSource->repos->count();
+        $accounts_count = $this->remote->accounts->count();
+        $repos_count = $this->remote->repos->count();
 
         // Return early if there are no dependencies
         if($accounts_count + $repos_count === 0) return false;
@@ -110,39 +104,14 @@ class DeleteRemoteSource extends Command
         $total = array_sum($numbers);
 
         $this->error(sprintf(
-            "Remote source '%s' cannot be deleted. There "
+            "Remote '%s' cannot be deleted. There "
             . ($total > 1 ? "are " : "is ")
             . implode(" and ", $number_errors)
             . " registered as "
             . ($total > 1 ? "dependencies." : "a dependency."),
-            $this->remoteSource->{$this->option('search-by')},
+            $this->remote->{$this->option('search-by')},
             ...$numbers
         ));
-
-        return true;
-    }
-
-    /**
-     * Try to find a matching RemoteSource
-     *
-     * @return bool
-     */
-    protected function remoteSourceIsFound(): bool
-    {
-        try {
-            $this->remoteSource = RemoteSource::where(
-                $this->option('search-by'),
-                $this->argument('searchValue')
-            )->with(['accounts', 'repos'])
-                ->firstOrFail();
-        } catch (ModelNotFoundException) {
-            $this->error(sprintf(
-                "A remote source was not found by '%s' with value '%s'.",
-                $this->option('search-by'),
-                $this->argument('searchValue')
-            ));
-            return false;
-        }
 
         return true;
     }

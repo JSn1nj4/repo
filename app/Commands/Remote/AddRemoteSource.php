@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Remote;
 
-use App\Actions\Console\CheckRemoteSourceExists;
 use App\Models\RemoteSource;
+use App\Traits\CommandFindsRemote;
 use LaravelZero\Framework\Commands\Command;
 
 class AddRemoteSource extends Command
 {
+    use CommandFindsRemote;
+
     /**
      * The signature of the command.
      *
@@ -30,18 +32,16 @@ class AddRemoteSource extends Command
      *
      * @return mixed
      */
-    public function handle(CheckRemoteSourceExists $remoteSourceExists): int
+    public function handle(): int
     {
-        if($remoteSourceExists(
+        if(!$this->remoteMissing(
             by: 'name',
             with: $this->argument('name'),
-            command: $this
         )) return self::FAILURE;
 
-        if($remoteSourceExists(
+        if(!$this->remoteMissing(
             by: 'url_base',
             with: $this->argument('url_base'),
-            command: $this
         )) return self::FAILURE;
 
         RemoteSource::create([

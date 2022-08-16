@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Account;
 
 use App\Models\Account;
 use App\Models\RemoteSource;

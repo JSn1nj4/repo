@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Account;
 
 use App\Enums\AccountEditableField;
 use App\Enums\AccountSearchableField;
-use App\Models\Account;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Traits\CommandFindsAccount;
 use LaravelZero\Framework\Commands\Command;
 
 class EditAccount extends Command
 {
-    /**
-     * The Account model to update
-     *
-     * @var Account
-     */
-    protected Account $account;
+    use CommandFindsAccount;
 
     /**
      * The signature of the command.
@@ -34,33 +28,6 @@ class EditAccount extends Command
      * @var string
      */
     protected $description = 'Edit an existing account.';
-
-    /**
-     * Check if account exists
-     *
-     * If so, save the reference, otherwise log an error.
-     *
-     * @return bool
-     */
-    protected function accountIsFound(): bool
-    {
-        try {
-            $this->account = Account::where(
-                $this->option('search-by'),
-                $this->argument('search-value')
-            )->firstOrFail();
-        } catch (ModelNotFoundException) {
-            $this->error(sprintf(
-                "A remote source with '%s' matching '%s' does not exist.",
-                $this->option('search-by'),
-                $this->argument('search-value')
-            ));
-
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * Check if the field to edit is editable
@@ -92,7 +59,7 @@ class EditAccount extends Command
 
         if(!$this->fieldIsEditable()) return self::FAILURE;
 
-        if(!$this->accountIsFound()) return self::FAILURE;
+        if(!$this->findAccount()) return self::FAILURE;
 
         $this->updateAccount();
 

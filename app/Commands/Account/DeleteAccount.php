@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Account;
 
 use App\Enums\AccountSearchableField;
-use App\Models\Account;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Traits\CommandFindsAccount;
 use LaravelZero\Framework\Commands\Command;
 
 class DeleteAccount extends Command
 {
-    /**
-     * @var Account
-     */
-    protected Account $account;
+    use CommandFindsAccount;
 
     /**
      * The signature of the command.
@@ -54,32 +50,6 @@ class DeleteAccount extends Command
         return true;
     }
 
-    /**
-     * Check whether an account exists
-     *
-     * @return bool
-     */
-    protected function accountIsFound(): bool
-    {
-        try {
-            $this->account = Account::where(
-                $this->option('search-by'),
-                $this->argument('search-value')
-            )->with('repos')
-                ->firstOrFail();
-        } catch (ModelNotFoundException) {
-            $this->error(sprintf(
-                "An account with '%s' of '%s' was not found.",
-                $this->option('search-by'),
-                $this->argument('search-value')
-            ));
-
-            return false;
-        }
-
-        return true;
-    }
-
     protected function deleteAccount(): bool
     {
         try {
@@ -106,7 +76,7 @@ class DeleteAccount extends Command
     {
         if(!$this->searchFieldIsAllowed()) return self::FAILURE;
 
-        if(!$this->accountIsFound()) return self::FAILURE;
+        if(!$this->findAccount()) return self::FAILURE;
 
         if($this->accountHasDependencies()) return self::FAILURE;
 

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Actions\Console\ConsoleAction;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ConsoleAction::class);
+        // ...
     }
 }

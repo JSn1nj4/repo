@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Remote;
 
 use App\Models\RemoteSource;
 use LaravelZero\Framework\Commands\Command;
