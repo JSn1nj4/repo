@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('remote_sources', function (Blueprint $table) {
+        Schema::create('hosts', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('url_base')->unique();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('remote_sources');
+        Schema::dropIfExists('hosts');
     }
 };

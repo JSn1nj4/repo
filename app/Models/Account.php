@@ -22,7 +22,7 @@ use InvalidArgumentException;
  * @property string $shorthand
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RemoteSource[] $remoteSources
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Host[] $remoteSources
  * @property-read int|null $remote_sources_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Repo[] $repos
  * @property-read int|null $repos_count
@@ -45,15 +45,15 @@ class Account extends Model
     use HasFactory;
 
     protected $fillable = [
-        'remote_source_id',
+        'host_id',
         'name',
         'slug',
         'shorthand',
     ];
 
-    public function remoteSource(): BelongsTo
+    public function host(): BelongsTo
     {
-        return $this->belongsTo(RemoteSource::class);
+        return $this->belongsTo(Host::class);
     }
 
     public function repos(): HasMany

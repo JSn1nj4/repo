@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\RemoteSource;
+use App\Models\Host;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AccountFactory extends Factory
 {
-    protected ?Collection $remote_sources;
+    protected ?Collection $hosts;
 
     /**
      * Define the model's default state.
@@ -20,10 +20,10 @@ class AccountFactory extends Factory
      */
     public function definition()
     {
-        $this->remote_sources = RemoteSource::all();
+        $this->hosts = Host::all();
 
         return [
-            'remote_source_id' => $this->remote_sources->random()->id,
+            'remote_source_id' => $this->hosts->random()->id,
             'name' => $this->faker->unique()->name,
             'slug' => $this->faker->unique()->slug,
             'shorthand' => $this->faker->unique()->asciify('***'),

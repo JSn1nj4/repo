@@ -2,16 +2,16 @@
 
 namespace App\Traits;
 
-use App\Models\RemoteSource;
+use App\Models\Host;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-trait CommandFindsRemote
+trait CommandFindsHost
 {
-    protected RemoteSource $remote;
+    protected Host $host;
 
-    protected function remoteExists(string $by, string $with): bool
+    protected function hostExists(string $by, string $with): bool
     {
-        if(RemoteSource::exists($by, $with)) return true;
+        if(Host::exists($by, $with)) return true;
 
         $this->error(sprintf(
             "A remote with '%s' matching '%s' was not found.",
@@ -21,9 +21,9 @@ trait CommandFindsRemote
         return false;
     }
 
-    protected function remoteMissing(string $by, string $with): bool
+    protected function hostMissing(string $by, string $with): bool
     {
-        if(!RemoteSource::exists($by, $with)) return true;
+        if(!Host::exists($by, $with)) return true;
 
         $this->error(sprintf(
             "A remote with '%s' matching '%s' exists.",
@@ -33,17 +33,17 @@ trait CommandFindsRemote
         return false;
     }
 
-    protected function findRemote(): bool
+    protected function findHost(): bool
     {
         try {
-            $this->remote = RemoteSource::where(
+            $this->host = Host::where(
                 $this->option('search-by'),
                 $this->argument('search-value')
             )->with(['accounts', 'repos'])
                 ->firstOrFail();
         } catch (ModelNotFoundException) {
             $this->error(sprintf(
-                "A remote was not found by '%s' with value '%s'.",
+                "A host was not found by '%s' with value '%s'.",
                 $this->option('search-by'),
                 $this->argument('search-value')
             ));

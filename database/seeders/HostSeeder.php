@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\RemoteSource;
+use App\Models\Host;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RemoteSourceSeeder extends Seeder
+class HostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,10 @@ class RemoteSourceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table(RemoteSource::make()->getTable())
+        DB::table(Host::make()->getTable())
             ->truncate();
 
-        RemoteSource::factory(3)
+        Host::factory(3)
             ->create();
     }
 }

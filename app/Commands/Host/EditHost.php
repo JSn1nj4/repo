@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Commands\Remote;
+namespace App\Commands\Host;
 
 use App\Enums\RemoteSourceEditableField;
 use App\Enums\RemoteSourceUniqueField;
-use App\Traits\CommandFindsRemote;
+use App\Traits\CommandFindsHost;
 use LaravelZero\Framework\Commands\Command;
 
-class EditRemoteSource extends Command
+class EditHost extends Command
 {
-    use CommandFindsRemote;
+    use CommandFindsHost;
 
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'edit:remote_source
-        {--search-by=name : The field to find a remote by - one of "id", "name", or "url_base".}
+    protected $signature = 'edit:host
+        {--search-by=name : The field to find a host by - one of "id", "name", or "url_base".}
         {--edit-field=name : The field to update - one of "name", "url_base", or "separator".}
         {search-value : The value to search by.}
         {new : The field\'s new value.}';
@@ -27,7 +27,7 @@ class EditRemoteSource extends Command
      *
      * @var string
      */
-    protected $description = 'Edit an existing remote source.';
+    protected $description = 'Edit an existing host.';
 
     /**
      * Execute the console command.
@@ -40,7 +40,7 @@ class EditRemoteSource extends Command
 
         if(!$this->fieldIsEditable()) return self::FAILURE;
 
-        if(!$this->findRemote()) return self::FAILURE;
+        if(!$this->findHost()) return self::FAILURE;
 
         $this->updateRemoteSource();
 
@@ -86,23 +86,23 @@ class EditRemoteSource extends Command
     }
 
     /**
-     * Update the found remote source
+     * Update the found host
      *
      * @return void
      */
     protected function updateRemoteSource(): void
     {
-        $this->remote->{$this->option('edit-field')} = $this->argument('new');
-        $this->remote->save();
+        $this->host->{$this->option('edit-field')} = $this->argument('new');
+        $this->host->save();
 
-        $this->info('Remote source updated');
+        $this->info('Host updated');
         $this->table(
             ['id', 'name', 'url_base', 'separator'],
             [[
-                'id' => $this->remote->id,
-                'name' => $this->remote->name,
-                'url_base' => $this->remote->url_base,
-                'separator' => $this->remote->separator,
+                'id' => $this->host->id,
+                'name' => $this->host->name,
+                'url_base' => $this->host->url_base,
+                'separator' => $this->host->separator,
             ]]
         );
     }

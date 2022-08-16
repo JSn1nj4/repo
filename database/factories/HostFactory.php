@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory
  */
-class RemoteSourceFactory extends Factory
+class HostFactory extends Factory
 {
     private static array $prefixes = ['git@', 'https://'];
 

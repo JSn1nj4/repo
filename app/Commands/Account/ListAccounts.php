@@ -3,7 +3,7 @@
 namespace App\Commands\Account;
 
 use App\Models\Account;
-use App\Models\RemoteSource;
+use App\Models\Host;
 use LaravelZero\Framework\Commands\Command;
 
 class ListAccounts extends Command
@@ -31,11 +31,11 @@ class ListAccounts extends Command
     {
         $this->info("Accounts currently saved");
         $this->table(
-            ['id', 'remote_source', 'name', 'slug', 'shorthand', 'repos_count'],
+            ['id', 'host', 'name', 'slug', 'shorthand', 'repos_count'],
             Account::select('id')
                 ->addSelect([
-                    'remote_source' => RemoteSource::select('name')
-                        ->whereColumn('id', 'accounts.remote_source_id')
+                    'host' => Host::select('name')
+                        ->whereColumn('id', 'accounts.host_id')
                 ])
                 ->addSelect(['name', 'slug', 'shorthand'])
                 ->withCount('repos')

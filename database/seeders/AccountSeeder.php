@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
-use App\Models\RemoteSource;
+use App\Models\Host;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +16,8 @@ class AccountSeeder extends Seeder
      */
     public function run()
     {
-        if(RemoteSource::count() === 0) {
-            $this->call(RemoteSourceSeeder::class);
+        if(Host::count() === 0) {
+            $this->call(HostSeeder::class);
         }
 
         DB::table(Account::make()->getTable())

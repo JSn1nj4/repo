@@ -23,21 +23,21 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read int|null $owners_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Repo[] $repos
  * @property-read int|null $repos_count
- * @method static \Database\Factories\RemoteSourceFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource query()
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereSeparator($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RemoteSource whereUrlBase($value)
+ * @method static \Database\Factories\HostFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Host newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Host query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereSeparator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Host whereUrlBase($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Account[] $accounts
  * @property-read int|null $accounts_count
  */
-class RemoteSource extends Model
+class Host extends Model
 {
     use HasFactory;
 

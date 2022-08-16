@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Commands\Remote;
+namespace App\Commands\Host;
 
 use App\Enums\RemoteSourceUniqueField;
-use App\Traits\CommandFindsRemote;
+use App\Traits\CommandFindsHost;
 use LaravelZero\Framework\Commands\Command;
 
-class DeleteRemoteSource extends Command
+class DeleteHost extends Command
 {
-    use CommandFindsRemote;
+    use CommandFindsHost;
 
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'delete:remote_source
+    protected $signature = 'delete:host
         {--search-by=name : The field to find a remote source by - one of "id", "name", or "url_base".}
         {search-value : The value to search by.}';
 
@@ -36,7 +36,7 @@ class DeleteRemoteSource extends Command
     protected function deleteRemoteSource(): bool
     {
         try {
-            $this->remote->deleteOrFail();
+            $this->host->deleteOrFail();
         } catch (\Throwable) {
             $this->error(sprintf(
                 "Failed to delete remote source by '%s' with value '%s'.",
@@ -59,7 +59,7 @@ class DeleteRemoteSource extends Command
     {
         if(!$this->searchFieldIsAllowed()) return self::FAILURE;
 
-        if(!$this->findRemote()) return self::FAILURE;
+        if(!$this->findHost()) return self::FAILURE;
 
         if($this->remoteSourceHasDependencies()) return self::FAILURE;
 
@@ -80,8 +80,8 @@ class DeleteRemoteSource extends Command
      */
     protected function remoteSourceHasDependencies(): bool
     {
-        $accounts_count = $this->remote->accounts->count();
-        $repos_count = $this->remote->repos->count();
+        $accounts_count = $this->host->accounts->count();
+        $repos_count = $this->host->repos->count();
 
         // Return early if there are no dependencies
         if($accounts_count + $repos_count === 0) return false;
@@ -109,7 +109,7 @@ class DeleteRemoteSource extends Command
             . implode(" and ", $number_errors)
             . " registered as "
             . ($total > 1 ? "dependencies." : "a dependency."),
-            $this->remote->{$this->option('search-by')},
+            $this->host->{$this->option('search-by')},
             ...$numbers
         ));
 
