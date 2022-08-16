@@ -86,30 +86,36 @@ class DeleteRemoteSource extends Command
      */
     protected function remoteSourceHasDependencies(): bool
     {
+        $accounts_count = $this->remoteSource->accounts->count();
+        $repos_count = $this->remoteSource->repos->count();
+
         // Return early if there are no dependencies
-        if($this->remoteSource->owners_count + $this->remoteSource->repos_count === 0) {
-            return false;
-        }
+        if($accounts_count + $repos_count === 0) return false;
 
         // prep counts and error fragments
         $numbers = [];
         $number_errors = [];
 
-        if($this->remoteSource->owners_count > 0) {
-            $numbers[] = $this->remoteSource->owners_count;
-            $number_errors[] = "%d owners";
+        if($accounts_count > 0) {
+            $numbers[] = $accounts_count;
+            $number_errors[] = "%d account" . ($accounts_count > 1 ? "s" : "");
         }
 
-        if($this->remoteSource->repos_count > 0) {
-            $numbers[] = $this->remoteSource->repos_count;
-            $number_errors[] = "%d repos";
+        if($repos_count > 0) {
+            $numbers[] = $repos_count;
+            $number_errors[] = "%d repo" . ($repos_count > 1 ? "s" : "");
         }
 
         // format final error message
+        $total = array_sum($numbers);
+
         $this->error(sprintf(
-            "Remote source '%s' cannot be deleted. There are "
+            "Remote source '%s' cannot be deleted. There "
+            . ($total > 1 ? "are " : "is ")
             . implode(" and ", $number_errors)
-            . " registered as dependencies.",
+            . " registered as "
+            . ($total > 1 ? "dependencies." : "a dependency."),
+            $this->remoteSource->{$this->option('search-by')},
             ...$numbers
         ));
 
@@ -124,7 +130,10 @@ class DeleteRemoteSource extends Command
     protected function remoteSourceIsFound(): bool
     {
         try {
-            $this->remoteSource = RemoteSource::where($this->option('search-by'), $this->argument('searchValue'))
+            $this->remoteSource = RemoteSource::where(
+                $this->option('search-by'),
+                $this->argument('searchValue')
+            )->with(['accounts', 'repos'])
                 ->firstOrFail();
         } catch (ModelNotFoundException) {
             $this->error(sprintf(
