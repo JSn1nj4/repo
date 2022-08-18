@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\RemoteSourceUniqueField;
+use App\Enums\HostUniqueField;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,17 +20,17 @@ class Host extends Model
         'separator',
     ];
 
-    public static function exists(RemoteSourceUniqueField|string $by, int|string $with): bool
+    public static function exists(HostUniqueField|string $by, int|string $with): bool
     {
         if(is_string($by)) {
-            $by = RemoteSourceUniqueField::tryFrom($by);
+            $by = HostUniqueField::tryFrom($by);
         }
 
         if(is_null($by)) {
             throw new InvalidArgumentException(sprintf(
                 "Argument for '\$by' must be either an instance of '%s' or a string of: '%s'.",
-                RemoteSourceUniqueField::class,
-                RemoteSourceUniqueField::implode("', '")
+                HostUniqueField::class,
+                HostUniqueField::implode("', '")
             ));
         }
 

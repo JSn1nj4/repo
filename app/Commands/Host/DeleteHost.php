@@ -2,7 +2,7 @@
 
 namespace App\Commands\Host;
 
-use App\Enums\RemoteSourceUniqueField;
+use App\Enums\HostUniqueField;
 use App\Traits\CommandFindsHost;
 use LaravelZero\Framework\Commands\Command;
 
@@ -106,10 +106,10 @@ class DeleteHost extends Command
 
     protected function searchFieldIsAllowed(): bool
     {
-        if(!RemoteSourceUniqueField::tryFrom($this->option('search-by'))) {
+        if(!HostUniqueField::tryFrom($this->option('search-by'))) {
             $this->error(sprintf(
                 "'--search-by' must be one of: '%s'",
-                RemoteSourceUniqueField::implode('\', \'')
+                HostUniqueField::implode('\', \'')
             ));
             return false;
         }

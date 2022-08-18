@@ -2,8 +2,8 @@
 
 namespace App\Commands\Host;
 
-use App\Enums\RemoteSourceEditableField;
-use App\Enums\RemoteSourceUniqueField;
+use App\Enums\HostEditableField;
+use App\Enums\HostUniqueField;
 use App\Traits\CommandFindsHost;
 use LaravelZero\Framework\Commands\Command;
 
@@ -42,7 +42,7 @@ class EditHost extends Command
 
         if(!$this->findHost()) return self::FAILURE;
 
-        $this->updateRemoteSource();
+        $this->updateHost();
 
         return self::SUCCESS;
     }
@@ -54,10 +54,10 @@ class EditHost extends Command
      */
     protected function fieldIsEditable(): bool
     {
-        if(!RemoteSourceEditableField::tryFrom($this->option('edit-field'))) {
+        if(!HostEditableField::tryFrom($this->option('edit-field'))) {
             $this->error(sprintf(
                 "'--edit-field' must be one of: '%s'",
-                RemoteSourceEditableField::implode('\', \'')
+                HostEditableField::implode('\', \'')
             ));
             return false;
         }
@@ -67,10 +67,10 @@ class EditHost extends Command
 
     protected function searchFieldIsAllowed(): bool
     {
-        if(!RemoteSourceUniqueField::tryFrom($this->option('search-by'))) {
+        if(!HostUniqueField::tryFrom($this->option('search-by'))) {
             $this->error(sprintf(
                 "'--search-by' must be one of: '%s'",
-                RemoteSourceUniqueField::implode('\', \'')
+                HostUniqueField::implode('\', \'')
             ));
             return false;
         }
@@ -78,7 +78,7 @@ class EditHost extends Command
         return true;
     }
 
-    protected function updateRemoteSource(): void
+    protected function updateHost(): void
     {
         $this->host->{$this->option('edit-field')} = $this->argument('new');
         $this->host->save();
