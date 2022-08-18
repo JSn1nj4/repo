@@ -9,13 +9,6 @@ trait CommandFindsAccount
 {
     protected Account $account;
 
-    /**
-     * Logs an error if a matching account is not found
-     *
-     * @param string $by
-     * @param string $with
-     * @return bool
-     */
     protected function accountExists(string $by, string $with): bool
     {
         if(Account::exists($by, $with)) return true;
@@ -28,13 +21,6 @@ trait CommandFindsAccount
         return false;
     }
 
-    /**
-     * Confirm that a matching account is not found
-     *
-     * @param string $by
-     * @param string $with
-     * @return bool
-     */
     protected function accountMissing(string $by, string $with): bool
     {
         if(!Account::exists($by, $with)) return true;

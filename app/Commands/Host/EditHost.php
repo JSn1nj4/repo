@@ -65,13 +65,6 @@ class EditHost extends Command
         return true;
     }
 
-    /**
-     * Determine if the search-by field is searchable
-     *
-     * "Searchable" in this context means for the purposes of this function. Since the "separator" field is not unique, it's possible to accidentally update multiple records if searching by this field.
-     *
-     * @return bool
-     */
     protected function searchFieldIsAllowed(): bool
     {
         if(!RemoteSourceUniqueField::tryFrom($this->option('search-by'))) {
@@ -85,11 +78,6 @@ class EditHost extends Command
         return true;
     }
 
-    /**
-     * Update the found host
-     *
-     * @return void
-     */
     protected function updateRemoteSource(): void
     {
         $this->host->{$this->option('edit-field')} = $this->argument('new');

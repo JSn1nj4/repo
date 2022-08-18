@@ -18,19 +18,11 @@ class Repo extends Model
         'slug',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
-    /**
-     * @param RepoSearchableField|string $by
-     * @param int|string $with
-     * @return bool
-     */
     public static function exists(RepoSearchableField|string $by, int|string $with): bool
     {
         if(is_string($by)) {
@@ -54,9 +46,6 @@ class Repo extends Model
         return true;
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function remoteSource(): BelongsTo
     {
         return $this->account->belongsTo(Host::class);

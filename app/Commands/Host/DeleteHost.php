@@ -26,13 +26,6 @@ class DeleteHost extends Command
      */
     protected $description = 'Remove a remote source from the database.';
 
-    /**
-     * Delete the remote source
-     *
-     * If unable to delete the remote source, an error will be printed to the console.
-     *
-     * @return bool
-     */
     protected function deleteRemoteSource(): bool
     {
         try {
@@ -73,11 +66,6 @@ class DeleteHost extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * Determine if a remote source still has dependencies
-     *
-     * @return bool
-     */
     protected function remoteSourceHasDependencies(): bool
     {
         $accounts_count = $this->host->accounts->count();
@@ -116,13 +104,6 @@ class DeleteHost extends Command
         return true;
     }
 
-    /**
-     * Determine if the search-by field is searchable
-     *
-     * "Searchable" in this context means for the purposes of this function. Since the "separator" field is not unique, it's possible to accidentally update multiple records if searching by this field.
-     *
-     * @return bool
-     */
     protected function searchFieldIsAllowed(): bool
     {
         if(!RemoteSourceUniqueField::tryFrom($this->option('search-by'))) {

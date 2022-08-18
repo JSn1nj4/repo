@@ -26,11 +26,6 @@ class DeleteAccount extends Command
      */
     protected $description = 'Remove an account from the database.';
 
-    /**
-     * Check if the found account has dependencies
-     *
-     * @return bool
-     */
     protected function accountHasDependencies(): bool
     {
         $repos_count = $this->account->repos->count();
@@ -90,11 +85,6 @@ class DeleteAccount extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * Determine if the search-by field is searchable
-     *
-     * @return bool
-     */
     protected function searchFieldIsAllowed(): bool
     {
         if(!AccountSearchableField::tryFrom($this->option('search-by'))) {

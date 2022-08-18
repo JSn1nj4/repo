@@ -12,6 +12,7 @@ class AddRepo extends Command
 {
     use CommandFindsAccount,
         CommandFindsRepo;
+
     /**
      * The signature of the command.
      *

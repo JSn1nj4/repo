@@ -29,11 +29,6 @@ class EditAccount extends Command
      */
     protected $description = 'Edit an existing account.';
 
-    /**
-     * Check if the field to edit is editable
-     *
-     * @return bool
-     */
     protected function fieldIsEditable(): bool
     {
         if(!AccountEditableField::tryFrom($this->option('edit-field'))) {

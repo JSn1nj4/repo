@@ -4,7 +4,6 @@ namespace App\Commands\Repo;
 
 use App\Models\Account;
 use App\Models\Repo;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class ListRepo extends Command

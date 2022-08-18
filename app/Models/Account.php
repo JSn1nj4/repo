@@ -31,12 +31,6 @@ class Account extends Model
         return $this->hasMany(Repo::class);
     }
 
-    /**
-     * @param AccountSearchableField|string $by
-     * @param int|string $with
-     * @return bool
-     *@throws InvalidArgumentException
-     */
     public static function exists(AccountSearchableField|string $by, int|string $with): bool
     {
         if(is_string($by)) {

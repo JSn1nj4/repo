@@ -20,12 +20,6 @@ class Host extends Model
         'separator',
     ];
 
-    /**
-     * @param RemoteSourceUniqueField|string $by
-     * @param int|string $with
-     * @throws \InvalidArgumentException
-     * @return bool
-     */
     public static function exists(RemoteSourceUniqueField|string $by, int|string $with): bool
     {
         if(is_string($by)) {
