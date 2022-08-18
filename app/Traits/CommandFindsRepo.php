@@ -44,7 +44,7 @@ trait CommandFindsRepo
             $this->error(sprintf(
                 "A repo with '%s' matching '%s' does not exist.",
                 $this->option('search-by'),
-                $this->option('search-value')
+                $this->argument('search-value')
             ));
 
             return false;
