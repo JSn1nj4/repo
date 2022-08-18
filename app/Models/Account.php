@@ -10,36 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InvalidArgumentException;
 
-/**
- * An "owner" is a repository owner - either a user or an org
- *
- * This is why it's called "Owner", because this tool doesn't know
- * what type of account owns a repository.
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string $shorthand
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Host[] $remoteSources
- * @property-read int|null $remote_sources_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Repo[] $repos
- * @property-read int|null $repos_count
- * @method static \Database\Factories\OwnerFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Account newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account query()
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereShorthand($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property int $remote_source_id
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereRemoteSourceId($value)
- */
 class Account extends Model
 {
     use HasFactory;

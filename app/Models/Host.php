@@ -10,33 +10,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
-/**
- * App\Models\RemoteSource
- *
- * @property int $id
- * @property string $name
- * @property string $url_base
- * @property string $separator
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Account[] $owners
- * @property-read int|null $owners_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Repo[] $repos
- * @property-read int|null $repos_count
- * @method static \Database\Factories\HostFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Host newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Host newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Host query()
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereSeparator($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Host whereUrlBase($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Account[] $accounts
- * @property-read int|null $accounts_count
- */
 class Host extends Model
 {
     use HasFactory;
