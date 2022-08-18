@@ -23,7 +23,7 @@ class AccountSeeder extends Seeder
         DB::table(Account::make()->getTable())
             ->truncate();
 
-        Account::factory(10)
+        Account::factory(7)
             ->create();
     }
 }

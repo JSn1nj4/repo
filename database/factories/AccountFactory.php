@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AccountFactory extends Factory
 {
-    protected ?Collection $hosts;
+    protected static ?Collection $hosts;
 
     /**
      * Define the model's default state.
@@ -20,7 +20,7 @@ class AccountFactory extends Factory
      */
     public function definition()
     {
-        $this->hosts = Host::all();
+        if(!isset(self::$hosts)) self::$hosts = Host::all();
 
         return [
             'host_id' => self::$hosts->random()->id,
