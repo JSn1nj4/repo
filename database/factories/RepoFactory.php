@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\Host;
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Repo>
  */
-class AccountFactory extends Factory
+class RepoFactory extends Factory
 {
-    protected ?Collection $hosts;
+    protected static ?Collection $accounts;
 
     /**
      * Define the model's default state.
@@ -20,13 +20,12 @@ class AccountFactory extends Factory
      */
     public function definition()
     {
-        $this->hosts = Host::all();
+        if(!isset(self::$accounts)) self::$accounts = Account::all();
 
         return [
-            'host_id' => self::$hosts->random()->id,
+            'account_id' => self::$accounts->random()->id,
             'name' => $this->faker->unique()->name,
             'slug' => $this->faker->unique()->slug,
-            'shorthand' => $this->faker->unique()->asciify('***'),
         ];
     }
 }
