@@ -88,7 +88,6 @@ class CloneCommand extends Command
             $this->error("URL does not match expected pattern.");
             $this->error("Pattern: \<host\>(':' or '/')\<account\>/\<repository\>");
 
-            // Force throwing an error, stopping execution in `try`
             return false;
         }
 
