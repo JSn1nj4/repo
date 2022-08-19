@@ -2,11 +2,18 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
+use App\DTOs\ShortRepoURL;
+use App\Traits\CommandFindsAccount;
+use App\Traits\CommandFindsHost;
+use App\Traits\CommandFindsRepo;
 use LaravelZero\Framework\Commands\Command;
 
 class CloneCommand extends Command
 {
+    use CommandFindsHost,
+        CommandFindsAccount,
+        CommandFindsRepo;
+
     protected string $pattern = "/^(.*)[\/:](.*)\/(.*)$/i";
 
     /**
@@ -25,22 +32,20 @@ class CloneCommand extends Command
      */
     protected $description = 'Clone a repository';
 
+    protected ShortRepoURL $matches;
+
     protected function debug(): int
     {
         $this->info("Running in debug mode!\n");
         $this->line("Received input: {$this->argument('url')}");
         $this->line("Pattern: {$this->pattern}\n");
 
-        try {
-            [$url, $host, $account, $repo] = $this->matches();
-        } catch (\Throwable) {
-            return self::FAILURE;
-        }
+        if(!$this->matches()) return self::FAILURE;
 
         $this->info("Matches found:");
         $this->table(
-            ['url', 'host', 'account', 'repo'],
-            [compact('url', 'host', 'account', 'repo')]
+            ['original', 'host', 'account', 'repo'],
+            [$this->matches->toArray()]
         );
 
         return self::SUCCESS;
@@ -55,16 +60,19 @@ class CloneCommand extends Command
     {
         if($this->option('debug')) return $this->debug();
 
-        try {
-            [$url, $host, $account, $repo] = $this->matches();
-        } catch (\Throwable) {
-            return self::FAILURE;
-        }
+        if(!$this->matches()) return self::FAILURE;
+
+//        $this->task('Check host exists', [$this, 'findHost']);
 
         return self::SUCCESS;
     }
 
-    protected function matches(): array
+    protected function randomBool(): bool
+    {
+        return rand(0, 1) === 1;
+    }
+
+    protected function matches(): bool
     {
         // `preg_match()`, Y U NO TAKE ARRAY VAR FOR `$matches`?? (╯°□°)╯︵ ┻━┻
         $matches = null;
@@ -77,9 +85,11 @@ class CloneCommand extends Command
             $this->error("Pattern: \<host\>(':' or '/')\<account\>/\<repository\>");
 
             // Force throwing an error, stopping execution in `try`
-            return [];
+            return false;
         }
 
-        return $matches;
+        $this->matches = new ShortRepoURL(...$matches);
+
+        return true;
     }
 }
