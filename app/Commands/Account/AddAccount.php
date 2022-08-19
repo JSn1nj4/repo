@@ -23,7 +23,7 @@ class AddAccount extends Command
         {slug : The url-friendly representation of the account.}
         {shorthand : The shorthand to be used for short URL operations.}
         {host : The host this account is associated with.}
-        {--associate-by=id : The field to use for finding the right host. Can be one of "id", "name", "url_prefix".}';
+        {--associate-by=id : The field to use for finding the right host. Can be one of "id", "name", "url_prefix", or "shorthand".}';
 
     /**
      * The description of the command.

@@ -17,8 +17,8 @@ class EditHost extends Command
      * @var string
      */
     protected $signature = 'edit:host
-        {--search-by=name : The field to find a host by - one of "id", "name", or "url_base".}
-        {--edit-field=name : The field to update - one of "name", "url_base", or "separator".}
+        {--search-by=name : The field to find a host by - one of "id", "name", "url_base", or "shorthand".}
+        {--edit-field=name : The field to update - one of "name", "url_base", "separator", or "shorthand".}
         {search-value : The value to search by.}
         {new : The field\'s new value.}';
 
@@ -85,12 +85,13 @@ class EditHost extends Command
 
         $this->info('Host updated');
         $this->table(
-            ['id', 'name', 'url_base', 'separator'],
+            ['id', 'name', 'url_base', 'separator', 'shorthand'],
             [[
                 'id' => $this->host->id,
                 'name' => $this->host->name,
                 'url_base' => $this->host->url_base,
                 'separator' => $this->host->separator,
+                'shorthand' => $this->host->shorthand,
             ]]
         );
     }

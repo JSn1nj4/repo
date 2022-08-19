@@ -18,7 +18,8 @@ class AddHost extends Command
     protected $signature = 'add:host
         {name : The name of the host to add.}
         {url_base : The base of the host URL (e.g. \'git@github.com\').}
-        {separator : The separator that comes after the URL base (e.g. \':\' or \'/\').}';
+        {separator : The separator that comes after the URL base (e.g. \':\' or \'/\').}
+        {shorthand : The shorthand reference for the host (e.g. its "nickname").}';
 
     /**
      * The description of the command.
@@ -44,10 +45,16 @@ class AddHost extends Command
             with: $this->argument('url_base'),
         )) return self::FAILURE;
 
+        if(!$this->hostMissing(
+            by: 'shorthand',
+            with: $this->argument('shorthand'),
+        )) return self::FAILURE;
+
         Host::create([
             'name' => $this->argument('name'),
             'url_base' => $this->argument('url_base'),
             'separator' => $this->argument('separator'),
+            'shorthand' => $this->argument('shorthand'),
         ]);
 
         $this->info('Host added successfully.');

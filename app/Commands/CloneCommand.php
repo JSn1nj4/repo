@@ -34,6 +34,15 @@ class CloneCommand extends Command
 
     protected ShortRepoURL $matches;
 
+    protected function checkHostExists(): bool
+    {
+        if(!$this->hostExists(by: 'shorthand', with: $this->matches->host)) return false;
+
+        $this->host = Host::firstWhere('shorthand', $this->matches->host);
+
+        return true;
+    }
+
     protected function debug(): int
     {
         $this->info("Running in debug mode!\n");
@@ -62,14 +71,9 @@ class CloneCommand extends Command
 
         if(!$this->matches()) return self::FAILURE;
 
-//        $this->task('Check host exists', [$this, 'findHost']);
+        if(!$this->task('Check host exists', [$this, 'checkHostExists'])) return self::FAILURE;
 
         return self::SUCCESS;
-    }
-
-    protected function randomBool(): bool
-    {
-        return rand(0, 1) === 1;
     }
 
     protected function matches(): bool

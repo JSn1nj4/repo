@@ -30,8 +30,8 @@ class ListHost extends Command
     {
         $this->info("Hosts currently saved");
         $this->table(
-            ['id', 'name', 'url_base', 'separator', 'accounts_count', 'repos_count'],
-            Host::select(['id', 'name', 'url_base', 'separator'])
+            ['id', 'name', 'url_base', 'separator', 'shorthand', 'accounts_count', 'repos_count'],
+            Host::select(['id', 'name', 'url_base', 'separator', 'shorthand'])
                 ->withCount(['accounts', 'repos'])
                 ->get()
                 ->toArray()

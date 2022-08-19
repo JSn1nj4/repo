@@ -26,7 +26,8 @@ class HostFactory extends Factory
             'separator' => match($prefix) {
                 "git@" => ":",
                 default => "/",
-            }
+            },
+            'shorthand' => $this->faker->unique()->userName
         ];
     }
 }

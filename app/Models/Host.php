@@ -18,6 +18,7 @@ class Host extends Model
         'name',
         'url_base',
         'separator',
+        'shorthand',
     ];
 
     public static function exists(HostUniqueField|string $by, int|string $with): bool

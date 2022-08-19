@@ -10,4 +10,5 @@ enum HostEditableField: string {
     case NAME = 'name';
     case URL_BASE = 'url_base';
     case SEPARATOR = 'separator';
+    case SHORTHAND = 'shorthand';
 }

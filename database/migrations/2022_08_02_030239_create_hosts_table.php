@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('url_base')->unique();
+            $table->string('shorthand')->unique();
             $table->string('separator');
             $table->timestamps();
         });

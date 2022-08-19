@@ -16,7 +16,7 @@ class DeleteHost extends Command
      * @var string
      */
     protected $signature = 'delete:host
-        {--search-by=name : The field to find a remote source by - one of "id", "name", or "url_base".}
+        {--search-by=name : The field to find a remote source by - one of "id", "name", "url_base", or "shorthand".}
         {search-value : The value to search by.}';
 
     /**

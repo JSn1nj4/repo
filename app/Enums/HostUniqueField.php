@@ -10,4 +10,5 @@ enum HostUniqueField: string {
     case ID = 'id';
     case NAME = 'name';
     case URL_BASE = 'url_base';
+    case SHORTHAND = 'shorthand';
 }
