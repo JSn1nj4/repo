@@ -14,7 +14,7 @@ trait CommandFindsHost
         if(Host::exists($by, $with)) return true;
 
         $this->error(sprintf(
-            "A remote with '%s' matching '%s' was not found.",
+            "A host with '%s' matching '%s' was not found.",
             $by, $with
         ));
 
@@ -26,7 +26,7 @@ trait CommandFindsHost
         if(!Host::exists($by, $with)) return true;
 
         $this->error(sprintf(
-            "A remote with '%s' matching '%s' exists.",
+            "A host with '%s' matching '%s' exists.",
             $by, $with
         ));
 

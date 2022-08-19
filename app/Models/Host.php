@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\HostUniqueField;
-use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +27,7 @@ class Host extends Model
         }
 
         if(is_null($by)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 "Argument for '\$by' must be either an instance of '%s' or a string of: '%s'.",
                 HostUniqueField::class,
                 HostUniqueField::implode("', '")
