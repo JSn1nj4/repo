@@ -2,10 +2,12 @@
 
 namespace App\Enums;
 
+use App\Enums\Traits\ChecksValues;
 use App\Enums\Traits\OutputsValueLists;
 
 enum HostUniqueField: string {
-    use OutputsValueLists;
+    use ChecksValues,
+        OutputsValueLists;
 
     case ID = 'id';
     case NAME = 'name';
