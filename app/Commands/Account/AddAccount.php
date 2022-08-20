@@ -39,26 +39,34 @@ class AddAccount extends Command
      */
     public function handle(): int
     {
-        if(!$this->accountMissing(
-            by: 'name',
-            with: $this->argument('name')
-        )) return self::FAILURE;
-
-        if(!$this->accountMissing(
-            by: 'slug',
-            with: $this->argument('slug')
-        )) return self::FAILURE;
-
-        if(!$this->hostExists(
+        if(!$this->findHostBy(
             by: $this->option('associate-by'),
-            with: $this->argument('host'),
-        )) return self::FAILURE;
-
-        Account::create([
-            'host_id' => Host::firstWhere(
+            with: $this->argument('host')
+        )) {
+            $this->error(sprintf(
+                "Host with key '%s' matching '%s' does not exist. Would you like to create it?",
                 $this->option('associate-by'),
                 $this->argument('host')
-            )->id,
+            ));
+
+            return self::FAILURE;
+        }
+
+        if($this->searchAccountWith([
+            'name' => $this->argument('name'),
+            'slug' => $this->argument('slug'),
+            'shorthand' => $this->argument('shorthand'),
+        ], $this->argument('host'))) {
+            $this->error(sprintf(
+                "A matching account was found for host '%s'",
+                $this->argument('host')
+            ));
+
+            return self::FAILURE;
+        }
+
+        Account::create([
+            'host_id' => $this->host->id,
             'name' => $this->argument('name'),
             'slug' => $this->argument('slug'),
             'shorthand' => $this->argument('shorthand')

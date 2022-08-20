@@ -9,44 +9,39 @@ trait CommandFindsAccount
 {
     protected Account $account;
 
-    protected function accountExists(string $by, string $with): bool
-    {
-        if(Account::exists($by, $with)) return true;
-
-        $this->error(sprintf(
-            "An account with '%s' matching '%s' was not found.",
-            $by, $with
-        ));
-
-        return false;
-    }
-
-    protected function accountMissing(string $by, string $with): bool
-    {
-        if(!Account::exists($by, $with)) return true;
-
-        $this->error(sprintf(
-            "An account with '%s' matching '%s' exists.",
-            $by, $with
-        ));
-
-        return false;
-    }
-
-    protected function findAccount(): bool
+    protected function findAccountBy(string $by, string $with, string $host_key, string $host_value): bool
     {
         try {
-            $this->account = Account::where(
-                $this->option('search-by'),
-                $this->argument('search-value')
-            )->firstOrFail();
+            $this->account = Account::where($by, $with)
+                ->whereHasHost($host_key, $host_value)
+                ->firstOrFail();
         } catch (ModelNotFoundException) {
-            $this->error(sprintf(
-                "An account with '%s' matching '%s' does not exist.",
-                $this->option('search-by'),
-                $this->argument('search-value')
-            ));
+            return false;
+        }
 
+        return true;
+    }
+
+    protected function searchAccount(mixed $value, mixed $host_value): bool
+    {
+        try {
+            $this->account = Account::search($value)
+                ->whereSearchHost($host_value)
+                ->firstOrFail();
+        } catch (ModelNotFoundException) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function searchAccountWith(array $fields, mixed $host_value): bool
+    {
+        try {
+            $this->account = Account::searchWith($fields)
+                ->whereSearchHost($host_value)
+                ->firstOrFail();
+        } catch (ModelNotFoundException) {
             return false;
         }
 

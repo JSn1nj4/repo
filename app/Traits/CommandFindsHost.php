@@ -9,6 +9,18 @@ trait CommandFindsHost
 {
     protected Host $host;
 
+    protected function findHostBy(string $by, mixed $with): bool
+    {
+        try {
+            $this->host = Host::where($by, $with)
+                ->firstOrFail();
+        } catch (ModelNotFoundException) {
+            return false;
+        }
+
+        return true;
+    }
+
     protected function hostExists(string $by, string $with): bool
     {
         if(Host::exists($by, $with)) return true;
